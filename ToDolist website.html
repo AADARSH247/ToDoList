@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="ToDowebsite.css">
+    <style>
+        #timeInputContainer {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <input type="text" id="taskInput" placeholder="Enter your task...">
+        <div id="timeInputContainer">
+            <input type="text" id="timeInput" placeholder="Enter time for your task...">
+        </div>
+        <button onclick="addTask()">Add Task</button>
+        <ol id="taskList"></ol>
+    </div>
+
+    <script>
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const timeInput = document.getElementById('timeInput');
+            const taskText = taskInput.value.trim();
+            const timeText = timeInput.value.trim();
+
+            if (taskText === '' || timeText === '') {
+                alert('Please enter both task and time!');
+                return;
+            }
+
+            const li = document.createElement('li');
+            li.innerHTML = `<input type="checkbox" onclick="toggleTask(this)"> ${taskText} - ${timeText}`;
+
+            document.getElementById('taskList').appendChild(li);
+            taskInput.value = '';
+            timeInput.value = '';
+            taskInput.focus();
+            document.getElementById('timeInputContainer').style.display = 'none';
+        }
+
+        function toggleTask(checkbox) {
+            const li = checkbox.parentElement;
+            if (checkbox.checked) {
+                li.style.textDecoration = "line-through";
+                li.style.opacity = "0.6";
+            } else {
+                li.style.textDecoration = "none";
+                li.style.opacity = "1";
+            }
+        }
+
+        document.getElementById('taskInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                if (taskInput.value.trim() !== '') {
+                    document.getElementById('timeInputContainer').style.display = 'block';
+                    document.getElementById('timeInput').focus();
+                }
+            }
+        });
+
+        document.getElementById('timeInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                addTask();
+            }
+        });
+    </script>
+</body>
+</html>
